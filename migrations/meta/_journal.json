@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1691192587301,
+      "tag": "0000_supreme_mister_fear",
+      "breakpoints": true
+    }
+  ]
+}
