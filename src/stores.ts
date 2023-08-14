@@ -11,6 +11,6 @@ export const toast = writable({
 // loginSession is updated so all parts of the SPA client-side see the user and role.
 export const loginSession = <Writable<Session>>writable(undefined)
 
-export type Session = User | undefined
+export type Session = Omit<User, 'password'> | undefined
 
 export const googleInitialized = writable(false)

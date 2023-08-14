@@ -3,10 +3,12 @@ import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js'
 import { session, type User } from './schema'
 import { eq } from 'drizzle-orm'
 
+const SESSION_TIMEOUT_IN_HOURS = 36
+
 export const createSession = async (db: PostgresJsDatabase, user: Partial<User>) => {
 	const id = createId()
 
-	const expiresAt = addHours(new Date(), 12).toISOString()
+	const expiresAt = addHours(new Date(), SESSION_TIMEOUT_IN_HOURS).toISOString()
 
 	if (user.id) {
 		const oldSession = await db.select().from(session).where(eq(session.userId, user.id))

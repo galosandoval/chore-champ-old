@@ -5,6 +5,16 @@
 	import '@skeletonlabs/skeleton/styles/skeleton.css'
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss'
+	import type { LayoutServerData } from './$types'
+	import { loginSession } from '../stores'
+	import { beforeNavigate } from '$app/navigation'
+
+	export let data: LayoutServerData
+	$loginSession = data.user
+
+	beforeNavigate(() => {
+		console.log('beforeNavigate')
+	})
 </script>
 
 <slot />

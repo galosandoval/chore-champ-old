@@ -43,8 +43,6 @@ export const actions = {
 				expires: new Date(session[0].expiresAt || '')
 			})
 
-			console.log('redirecting')
-
 			throw redirect(303, '/dashboard')
 		}
 	}

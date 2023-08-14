@@ -45,9 +45,65 @@ export const household = pgTable('household', {
 	updatedAt: text('updated_at').default(new Date().toISOString())
 })
 
+export const insertHouseholdSchema = createInsertSchema(household, {
+	id: (schema) => schema.id.optional(),
+	name: (schema) =>
+		schema.name
+			.min(1, 'Name must be more than 1 character')
+			.max(50, 'Name must be less than 50 characters')
+})
+
 export const householdRelations = relations(household, ({ many }) => ({
 	users: many(user),
-	chores: many(chore)
+	areas: many(area)
+}))
+
+export const area = pgTable('area', {
+	id: text('cuid').primaryKey(),
+	name: text('name').notNull(),
+	householdId: text('household_id').references(() => household.id),
+	createdAt: text('created_at').default(new Date().toISOString()),
+	updatedAt: text('updated_at').default(new Date().toISOString())
+})
+
+export const insertAreaSchema = createInsertSchema(area, {
+	id: (schema) => schema.id.optional(),
+	name: (schema) =>
+		schema.name
+			.min(1, 'Name must be more than 1 character')
+			.max(50, 'Name must be less than 50 characters')
+})
+
+export const areaRelation = relations(area, ({ one, many }) => ({
+	household: one(household, {
+		fields: [area.householdId],
+		references: [household.id]
+	}),
+	areasToChores: many(areasToChores)
+}))
+
+export const areasToChores = pgTable(
+	'areas_to_chores',
+	{
+		areaId: text('area_id').references(() => area.id),
+		choreId: text('chore_id').references(() => chore.id),
+		createdAt: text('created_at').default(new Date().toISOString()),
+		updatedAt: text('updated_at').default(new Date().toISOString())
+	},
+	(t) => ({
+		pk: primaryKey(t.areaId, t.choreId)
+	})
+)
+
+export const areasToChoresRelations = relations(areasToChores, ({ one }) => ({
+	group: one(area, {
+		fields: [areasToChores.areaId],
+		references: [area.id]
+	}),
+	user: one(chore, {
+		fields: [areasToChores.choreId],
+		references: [chore.id]
+	})
 }))
 
 export const chore = pgTable('chore', {
@@ -59,12 +115,22 @@ export const chore = pgTable('chore', {
 	updatedAt: text('updated_at').default(new Date().toISOString())
 })
 
+export const insertChoreSchema = createInsertSchema(chore, {
+	id: (schema) => schema.id.optional(),
+	name: (schema) =>
+		schema.name
+			.min(1, 'Name must be more than 1 character')
+			.max(50, 'Name must be less than 50 characters'),
+	description: (schema) => schema.description.max(50, 'Description must be less than 50 characters')
+})
+
 export const choreRelations = relations(chore, ({ many, one }) => ({
 	usersToChores: many(usersToChores),
 	household: one(household, {
 		fields: [chore.householdId],
 		references: [household.id]
-	})
+	}),
+	areasToChores: many(areasToChores)
 }))
 
 export const usersToChores = pgTable(

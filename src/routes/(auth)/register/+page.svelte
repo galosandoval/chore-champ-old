@@ -1,49 +1,31 @@
 <script lang="ts">
+	import Input from '$lib/components/Input.svelte'
 	import type { PageServerData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
 
 	export let data: PageServerData
 
-	const { form, errors } = superForm(data.form)
+	const { form, errors, enhance } = superForm(data.form)
 </script>
 
 <div class="h-full grid place-items-center">
-	<form class="card p-4 text-token space-y-4" method="POST">
+	<form class="card p-4 text-token space-y-4" use:enhance method="POST">
 		<h1 class="h1">Welcome</h1>
 
 		<div class="flex flex-col gap-2">
-			<div class="">
-				<label class="label"
-					><span>Email</span>
-					<input class="input" type="text" name="email" bind:value={$form.email} />
-				</label>
-				{#if $errors.email}
-					<span class="text-xs text-error-400">{$errors.email}</span>
-				{/if}
-			</div>
-			<div class="">
-				<label class="label">
-					<span>Password</span>
-					<input class="input" type="password" name="password" bind:value={$form.password} />
-				</label>
-				{#if $errors.password}
-					<span class="text-xs text-error-400">{$errors.password}</span>
-				{/if}
-			</div>
-			<div class="">
-				<label class="label">
-					<span>Confirm Password</span>
-					<input
-						class="input"
-						type="password"
-						name="confirmPassword"
-						bind:value={$form.confirmPassword}
-					/>
-				</label>
-				{#if $errors.confirmPassword}
-					<span class="text-xs text-error-400 text-e">{$errors.confirmPassword}</span>
-				{/if}
-			</div>
+			<Input name="email" errorMessage={$errors.name} value={$form.email} label="Email" />
+			<Input
+				name="password"
+				errorMessage={$errors.password}
+				value={$form.password}
+				label="Password"
+			/>
+			<Input
+				name="confirmPassword"
+				errorMessage={$errors.confirmPassword}
+				value={$form.confirmPassword}
+				label="Confirm Password"
+			/>
 		</div>
 
 		<div class="w-full flex flex-col items-center">
