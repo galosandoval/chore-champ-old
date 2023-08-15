@@ -11,6 +11,8 @@
 		{household.name}
 	</h1>
 	<form method="POST">
+		😂
+
 		<button class="btn variant-outline-error">Delete</button>
 	</form>
 </div>

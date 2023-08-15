@@ -1,29 +1,34 @@
 <script lang="ts">
-	export let value: string,
-		label: string | undefined,
-		errorMessage: string[] | undefined,
-		name: string,
-		type: string = 'text',
-		placeholder: string = ''
+	import type { InputConstraint } from 'sveltekit-superforms'
 
-	function typeAction(node: any) {
-		node.type = type
-		node.placeholder = placeholder
-	}
+	export let value: string
+	export let label: string | undefined = undefined
+	export let errors: string[] | undefined = undefined
+	export let constraints: InputConstraint | undefined = undefined
 </script>
 
 <div class="">
 	{#if label}
 		<label class="label"
 			><span>{label}</span>
-
-			<input {placeholder} class="input" use:typeAction {name} bind:value />
+			<input
+				class="input"
+				type="text"
+				bind:value
+				aria-invalid={errors ? 'true' : undefined}
+				{...constraints}
+				{...$$restProps}
+			/>
 		</label>
 	{:else}
-		<input {placeholder} class="input" use:typeAction {name} bind:value />
+		<input
+			class="input"
+			type="text"
+			bind:value
+			aria-invalid={errors ? 'true' : undefined}
+			{...constraints}
+			{...$$restProps}
+		/>
 	{/if}
-
-	{#if errorMessage}
-		<span class="text-xs text-error-400">{errorMessage}</span>
-	{/if}
+	{#if errors}<span class="text-xs text-error-400">{errors}</span>{/if}
 </div>

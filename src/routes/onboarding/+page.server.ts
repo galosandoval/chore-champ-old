@@ -1,8 +1,13 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 import { message, superValidate } from 'sveltekit-superforms/server'
-import { household, insertAreaSchema, insertHouseholdSchema, user } from '$lib/server/schema'
-import { db } from '$lib/server/db'
+import {
+	household,
+	insertHouseholdAreaAndChoreSchema,
+	insertHouseholdSchema,
+	user
+} from '$lib/server/db/schema'
+import { db } from '$lib/server/db/init'
 import { createId } from '@paralleldrive/cuid2'
 
 export const load = (async ({ locals }) => {
@@ -12,43 +17,37 @@ export const load = (async ({ locals }) => {
 		throw redirect(307, '/login')
 	}
 
-	const householdForm = await superValidate(insertHouseholdSchema)
-	const areaForm = await superValidate(insertAreaSchema)
+	const form = await superValidate(insertHouseholdAreaAndChoreSchema)
 
-	return { householdForm, areaForm }
+	return { form }
 }) satisfies PageServerLoad
 
 export const actions = {
-	createHousehold: async ({ request, locals }) => {
-		const householdForm = await superValidate(request, insertHouseholdSchema)
+	default: async ({ request, locals }) => {
+		const form = await superValidate(request, insertHouseholdAreaAndChoreSchema)
 
-		if (!householdForm.valid) {
-			return fail(400, { householdForm })
+		if (!form.valid) {
+			return fail(400, { form })
 		}
 
 		const householdId = createId()
 
 		const newHousehold = await db
 			.insert(household)
-			.values({ id: householdId, name: householdForm.data.name })
+			.values({ id: householdId, name: form.data.householdName })
 			.returning()
 
 		if (!newHousehold.length || !newHousehold[0].id) {
-			return fail(500, { householdForm })
+			return fail(500, { form })
 		}
 
 		const updatedUser = await db.update(user).set({ householdId: newHousehold[0].id }).returning()
 
 		if (!updatedUser.length || !updatedUser[0].id) {
 			message
-			return fail(500, { householdForm })
+			return fail(500, { form })
 		}
 
-		return message(householdForm, 'success')
-	},
-
-	createArea: async ({ request, locals }) => {
-		const { user: localsUser } = locals
 		const areaForm = await superValidate(request, insertHouseholdSchema)
 
 		if (!areaForm.valid) {
@@ -56,6 +55,9 @@ export const actions = {
 		}
 
 		const areaId = createId()
-		return { areaForm }
+
+		console.log(areaId)
+
+		return message(form, 'success')
 	}
 } satisfies Actions

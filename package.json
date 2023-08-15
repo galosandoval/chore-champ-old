@@ -15,7 +15,7 @@
     "test:unit": "vitest",
     "generate": "drizzle-kit generate:pg",
     "push": "drizzle-kit push:pg",
-    "studio": "bun drizzle-kit studio"
+    "studio": "npx drizzle-kit studio"
   },
   "devDependencies": {
     "@floating-ui/dom": "^1.5.1",
@@ -28,6 +28,7 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/google.accounts": "^0.0.9",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/pg": "^8.10.2",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "autoprefixer": "^10.4.14",
@@ -54,8 +55,8 @@
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
     "bcryptjs": "^2.4.3",
-    "drizzle-orm": "latest",
+    "drizzle-orm": "^0.28.2",
     "drizzle-zod": "^0.5.0",
-    "postgres": "^3.3.5"
+    "pg": "^8.11.2"
   }
 }

@@ -1,8 +1,8 @@
 import type { Actions, PageServerLoad } from './$types'
 import { setError, superValidate } from 'sveltekit-superforms/server'
 import { fail, redirect } from '@sveltejs/kit'
-import { db } from '$lib/server/db'
-import { registerSchema, user } from '$lib/server/schema'
+import { db } from '$lib/server/db/init'
+import { registerSchema, user } from '$lib/server/db/schema'
 import { createId } from '@paralleldrive/cuid2'
 import pkg from 'bcryptjs'
 const { hash } = pkg

@@ -1,5 +1,5 @@
-import { db } from '$lib/server/db'
-import { session, user } from '$lib/server/schema'
+import { db } from '$lib/server/db/init'
+import { session, user } from '$lib/server/db/schema'
 import type { Handle, RequestEvent } from '@sveltejs/kit'
 import { eq } from 'drizzle-orm'
 

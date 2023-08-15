@@ -1,4 +1,4 @@
-import type { User } from '$lib/server/schema'
+import type { User } from '$lib/server/db/schema'
 import { writable, type Writable } from 'svelte/store'
 
 export const toast = writable({

@@ -1,6 +1,6 @@
 import { createId } from '@paralleldrive/cuid2'
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js'
-import { session, type User } from './schema'
+import { session, type User } from './db/schema'
 import { eq } from 'drizzle-orm'
 
 const SESSION_TIMEOUT_IN_HOURS = 36
