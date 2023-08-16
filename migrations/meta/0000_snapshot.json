@@ -1,9 +1,136 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "e532016a-0e76-461e-8c9a-d0a6b323192b",
+  "id": "a07d06cf-0ebc-4765-8d00-5f6c017602a3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "area": {
+      "name": "area",
+      "schema": "",
+      "columns": {
+        "cuid": {
+          "name": "cuid",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "household_id": {
+          "name": "household_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "area_household_id_household_cuid_fk": {
+          "name": "area_household_id_household_cuid_fk",
+          "tableFrom": "area",
+          "tableTo": "household",
+          "columnsFrom": [
+            "household_id"
+          ],
+          "columnsTo": [
+            "cuid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "areas_to_chores": {
+      "name": "areas_to_chores",
+      "schema": "",
+      "columns": {
+        "area_id": {
+          "name": "area_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chore_id": {
+          "name": "chore_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "areas_to_chores_area_id_area_cuid_fk": {
+          "name": "areas_to_chores_area_id_area_cuid_fk",
+          "tableFrom": "areas_to_chores",
+          "tableTo": "area",
+          "columnsFrom": [
+            "area_id"
+          ],
+          "columnsTo": [
+            "cuid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "areas_to_chores_chore_id_chore_cuid_fk": {
+          "name": "areas_to_chores_chore_id_chore_cuid_fk",
+          "tableFrom": "areas_to_chores",
+          "tableTo": "chore",
+          "columnsFrom": [
+            "chore_id"
+          ],
+          "columnsTo": [
+            "cuid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "areas_to_chores_area_id_chore_id": {
+          "name": "areas_to_chores_area_id_chore_id",
+          "columns": [
+            "area_id",
+            "chore_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "chore": {
       "name": "chore",
       "schema": "",
@@ -34,15 +161,17 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
         }
       },
       "indexes": {},
@@ -82,19 +211,63 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "session": {
+      "name": "session",
+      "schema": "",
+      "columns": {
+        "cuid": {
+          "name": "cuid",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "session_user_id_user_cuid_fk": {
+          "name": "session_user_id_user_cuid_fk",
+          "tableFrom": "session",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "cuid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -134,15 +307,17 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
         }
       },
       "indexes": {},
@@ -190,15 +365,17 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'2023-08-16T05:50:33.389Z'"
         }
       },
       "indexes": {},
