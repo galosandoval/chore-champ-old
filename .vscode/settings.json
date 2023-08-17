@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "chore-champ",
+      "connectString": "postgresql://postgres:password@localhost:5432/chore_champ"
+    }
+  ]
+}
